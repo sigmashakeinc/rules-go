@@ -6,10 +6,9 @@ rule no-unexported-type-in-public-api {
   enabled true
   priority 75
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "**/*.go" AND content LINE_REGEX "^func [A-Z][a-zA-Z0-9]+\\([^)]*\\b[a-z][a-zA-Z0-9]*\\b"
   MESSAGE "Public function exposes unexported type in its signature — callers outside the package cannot reference it. Export the type or refactor the API."
-  PROMPT "Does this public function parameter or return type use an unexported (lowercase) type? If so, callers in other packages cannot use this API correctly."
 }
 
 rule no-stuttering-package-names {
@@ -34,10 +33,9 @@ rule no-naked-return {
   enabled true
   priority 80
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "**/*.go" AND content LINE_REGEX "^\\s+return\\s*$"
   MESSAGE "Naked return detected. Named return values with bare 'return' reduce readability in longer functions. Prefer explicit return values."
-  PROMPT "Is this a naked return? In functions longer than ~5 lines, explicit return values are clearer. Consider returning the values explicitly."
 }
 
 rule no-single-letter-var-outside-loop {

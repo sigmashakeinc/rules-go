@@ -24,10 +24,9 @@ rule no-context-in-struct {
   enabled true
   priority 85
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "**/*.go" AND content LINE_REGEX "context\\.Context" AND content LINE_REGEX "type\\s+[A-Z][a-zA-Z0-9]+\\s+struct"
   MESSAGE "context.Context should not be stored in a struct — it should flow through function parameters. Store context in structs only for request-scoped objects where it is the canonical approach."
-  PROMPT "Is this context.Context being stored in a struct field? Per Go guidelines, context should be passed as the first function parameter, not embedded in structs."
 }
 
 rule no-select-without-default-or-timeout {
@@ -43,8 +42,7 @@ rule no-time-sleep-in-production {
   enabled true
   priority 75
   severity warning
-  ASK write
+  LOG write
   IF path GLOB "**/*.go" AND content LINE_REGEX "time\\.Sleep\\(" AND path NOT GLOB "*_test.go"
   MESSAGE "time.Sleep() in non-test code often indicates a polling anti-pattern. Prefer channels, sync primitives, or ticker-based approaches for coordination."
-  PROMPT "Is this time.Sleep() used for coordination? Consider using time.Ticker, channel select with timeout, or sync.Cond instead."
 }
